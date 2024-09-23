@@ -37,7 +37,7 @@ class FakeCocktailsAPI: CocktailsAPI {
         let data = jsonData
         return Future<Data, CocktailsAPIError> { [weak self] promise in
             self?.queue.async {
-                sleep(3)
+                //sleep(3)
                 return promise(.success(data))
             }
         }
