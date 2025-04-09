@@ -1,5 +1,5 @@
 import UIKit
-
+/* // NOT IN USE
 class MainScreenViewController: UIViewController {
     
     private let cocktailsAPI: CocktailsAPI = FakeCocktailsAPI()
@@ -39,3 +39,4 @@ class MainScreenViewController: UIViewController {
         }
     }
 }
+*/

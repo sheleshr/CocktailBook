@@ -6,7 +6,8 @@
 //
 
 import Foundation
-struct CocktailModel : Codable {
+import SwiftUI
+class CocktailModel : Codable, ObservableObject {
     let id : String?
     let name : String?
     let type : String?
@@ -15,7 +16,7 @@ struct CocktailModel : Codable {
     let preparationMinutes : Int?
     let imageName : String?
     let ingredients : [String]
-    var selected:Bool
+    @Published var selected:Bool
     enum CodingKeys: String, CodingKey {
 
         case id = "id"
@@ -28,7 +29,7 @@ struct CocktailModel : Codable {
         case ingredients = "ingredients"
     }
 
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decodeIfPresent(String.self, forKey: .id)
         name = try values.decodeIfPresent(String.self, forKey: .name)
@@ -39,8 +40,14 @@ struct CocktailModel : Codable {
         imageName = try values.decodeIfPresent(String.self, forKey: .imageName)
         ingredients = try values.decodeIfPresent([String].self, forKey: .ingredients) ?? [String]()
         selected = false
+        FavStore.shared.favIDs.forEach {[unowned self] idstr in
+            if(idstr == self.id){
+                self.selected = true
+            }
+        }
     }
-    mutating func setSelection(isSelect:Bool){
+     func setSelection(isSelect:Bool){
+
         self.selected = isSelect
         if (isSelect){
             if (!FavStore.shared.favIDs.contains{$0 == self.id})
